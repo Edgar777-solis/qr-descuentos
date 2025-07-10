@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Descuento Aleatorio</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    img {
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <img id="premio" src="" alt="Descuento" />
+  <script>
+    const numero = Math.floor(Math.random() * 10) + 1;
+    const nombreImagen = `imagenes.descuento${numero}.png`;
+    document.getElementById("premio").src = nombreImagen;
+  </script>
+</body>
+</html>
+
