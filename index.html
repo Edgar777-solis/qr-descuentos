@@ -1,67 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>QR Descuentos Aleatorios</title>
-  <style>
-    body {
-      margin: 0;
-      background: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: sans-serif; /* Mejora la fuente */
-    }
-    img {
-      max-width: 100vw;
-      max-height: 100vh;
-      object-fit: contain; /* Asegura que la imagen se ajuste bien */
-    }
-    .info-disclaimer {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      font-size: 0.7em;
-      color: #888;
-    }
-  </style>
-</head>
-<body>
-  <img id="premio" src="" alt="Descuento Aleatorio" />
-
-  <script>
-    (async () => { // Usamos una función asíncrona autoejecutable para poder usar 'await'
-      // Parte 1: Mostrar la imagen aleatoria (que ya funciona)
-      const numero = Math.floor(Math.random() * 10) + 1;
-      const nombreImagen = `imagenes.descuento${numero}.png`;
-      document.getElementById("premio").src = nombreImagen;
-
-      // Parte 2: Preparar y enviar los datos al Apps Script
-      const datos = {
-        email: "anonimo@qr.com", // Email fijo y anónimo
-        fecha_cliente: new Date().toLocaleString(), // Fecha del cliente (Apps Script también registra su propia fecha)
-        idioma: navigator.language || "desconocido", // Idioma del navegador
-        navegador: navigator.userAgent || "desconocido", // User Agent del navegador
-        imagen_mostrada: nombreImagen // Nombre de la imagen que se mostró
-      };
-
-      try {
-        // !!! MUY IMPORTANTE: Reemplaza "TU_URL_APPS_SCRIPT" con la URL de tu aplicación web de Google Apps Script !!!
-        // Es la URL que copiaste al desplegar el Apps Script como web app (termina en /exec)
-        const urlAppsScript = "https://script.google.com/macros/s/AKfycby8nSVG3i2X21Y_rj_-DNODYf1ciGMzdsuffwUFWCJUdxW-PKzKhUvcBQnIrhNLRcU/exec"; // <-- ¡TU URL AQUÍ!
-
-        await fetch(urlAppsScript, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos)
-        });
-        console.log("Datos enviados correctamente al Apps Script.");
-      } catch(e) {
-        console.error("Error enviando datos al Apps Script:", e);
+  <head>
+    <meta charset="UTF-8" />
+    <title>Descuento aleatorio</title>
+    <style>
+      body {
+        background: white;
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
-    })(); // La función se ejecuta inmediatamente
-  </script>
-</body>
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const numero = Math.floor(Math.random() * 10) + 1;
+      const imagen = `imagenes.descuento${numero}.png`;
+      const img = document.createElement("img");
+      img.src = imagen;
+      document.body.appendChild(img);
+
+      // Enviar información al backend de Vercel
+      fetch(`/api/ip?imagen=${encodeURIComponent(imagen)}`);
+    </script>
+  </body>
 </html>
